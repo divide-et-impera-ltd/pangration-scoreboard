@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "1009654154888",
+    "project_id": "pangration-scoreboard",
+    "storage_bucket": "pangration-scoreboard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009654154888:android:8a3f182913abf9711c013d",
+        "android_client_info": {
+          "package_name": "com.divetimpera.pangration_score"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1009654154888-l00altggpfd4itkh2q6gj3i5it4168ik.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.divetimpera.pangration_score",
+            "certificate_hash": "fb64c7fda3dc1614dcec14f2ad9182fa03a62766"
+          }
+        },
+        {
+          "client_id": "1009654154888-84b8lr7f2bi65hli48pgvf4jlii1ku7t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARdcKJhwp_SWScnOckWAwA2AVo53OZJss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1009654154888-84b8lr7f2bi65hli48pgvf4jlii1ku7t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1009654154888-aqahc9vsp58ateh7gegc51c24h9a4f0t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.divetimpera.pangrationScore"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

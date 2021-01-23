@@ -14,11 +14,10 @@ class GridCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-          color: Colors.blue,
           borderRadius: BorderRadius.all(Radius.circular(20)),
           boxShadow: [
             BoxShadow(
-              color: Colors.blue.withOpacity(0.3),
+              color: Colors.grey.withOpacity(0.9),
               spreadRadius: 3,
               blurRadius: 10,
               offset: Offset(0,10), // changes position of shadow
@@ -35,7 +34,7 @@ class GridCell extends StatelessWidget {
             child:
             Container(
               decoration: BoxDecoration(
-                color: Colors.red,
+                color: Colors.blue,
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))
               ),
               child: Row(
@@ -48,7 +47,7 @@ class GridCell extends StatelessWidget {
               child:
               Container(
                 decoration: BoxDecoration(
-                    color: Colors.yellow,
+                    color: Colors.white30,
                     borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20))
                 ),
                 child: Row(
