@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class MyContainer extends StatelessWidget {
-  const MyContainer({
+class GridCell extends StatelessWidget {
+  const GridCell({
     Key key,
     @required this.count,
   }) : super(key: key);
