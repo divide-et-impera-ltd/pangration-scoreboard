@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'CustomWidgets/GridCell.dart';
+import 'ui/custom_widgets/grid_cell.dart';
 
 
 // <!-- The core Firebase JS SDK is always required and must be listed first -->
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Pangration scoreboard'),
     );
   }
 }
@@ -46,6 +46,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Pangration Scoreboard"),
+        backgroundColor: Colors.blue,
+      ),
       backgroundColor: Colors.white,
       body: Center(
         child: GridView.count(
