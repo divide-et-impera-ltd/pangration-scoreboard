@@ -1,11 +1,17 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
-import 'package:pangration_score/app/models/match.dart';
 
 import 'ui/custom_widgets/grid_cell.dart';
-import 'package:provider/provider.dart';
 
+
+// <!-- The core Firebase JS SDK is always required and must be listed first -->
+// <script src="/__/firebase/8.2.4/firebase-app.js"></script>
+//
+// <!-- TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries -->
+// <script src="/__/firebase/8.2.4/firebase-analytics.js"></script>
+//
+// <!-- Initialize Firebase -->
+// <script src="/__/firebase/init.js"></script>
 
 void main() {
   runApp(MyApp());
@@ -21,7 +27,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Pangration scoreboard'),
+      home: MyHomePage(title: 'Pangration Scoreboard'),
     );
   }
 }
@@ -36,10 +42,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-
   @override
   Widget build(BuildContext context) {
-    
+    final Orientation orientation = MediaQuery.of(context).orientation;
+    var screenSize = MediaQuery.of(context).size.width;
+    int count = 0;
+    if(screenSize < 450) {
+      count = 1;
+    } else if (orientation == Orientation.portrait) {
+      count = 2;
+    } else {
+      count = 3;
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text("Pangration Scoreboard"),
@@ -49,12 +63,11 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: GridView.count(
           primary: false,
-          padding: const EdgeInsets.all(20),
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          crossAxisCount: 4,
+          padding: const EdgeInsets.all(10),
+          crossAxisCount: count,
+          childAspectRatio: (orientation == Orientation.portrait) ? 1.0 : 1.3,
           children: <Widget>[
-            for(var count = 0; count < 30; count++)
+            for(var count = 0; count < 10; count++)
               GridCell(count: count)
           ],
         )

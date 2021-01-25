@@ -1,5 +1,7 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class GridCell extends StatelessWidget {
   const GridCell({
@@ -12,6 +14,8 @@ class GridCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // double fs = 30.0 * MediaQuery.of(context).size.width / 414.0;
+    // double resultFontSize = 10.0 * MediaQuery.of(context).size.width / 414.0;
     return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -29,7 +33,7 @@ class GridCell extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
+          children: <Widget>[
           Expanded(
             child:
             Container(
@@ -37,9 +41,34 @@ class GridCell extends StatelessWidget {
                 color: Colors.blue,
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))
               ),
-              child: Row(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[Text(count.toString(),)]
+                children: <Widget>[
+                  Container(
+                      child:FittedBox(
+                       child:
+                       AutoSizeText("Participant1",
+                         maxLines: 1,
+                         minFontSize: 30.0,
+                         maxFontSize: 50.0,
+                         stepGranularity: 5.0,
+                         style: TextStyle(
+                             color: Colors.white
+                         ),)
+                      )),
+                  Container(
+                    margin: EdgeInsets.only(top: 20.0),
+                      child:FittedBox(
+                          child:
+                          AutoSizeText(count.toString(),
+                            maxLines: 1,
+                            minFontSize: 25.0,
+                            maxFontSize: 30.0,
+                            stepGranularity: 5.0,
+                            style: TextStyle(
+                                color: Colors.white
+                            ),)
+                      ))]
               ),
             )
           ),
@@ -50,9 +79,33 @@ class GridCell extends StatelessWidget {
                     color: Colors.white30,
                     borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20))
                 ),
-                child: Row(
+                child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[Text(count.toString(),)]
+                    children: <Widget>[Container(
+                        child:FittedBox(
+                            child:
+                            AutoSizeText(count.toString(),
+                              maxLines: 1,
+                              minFontSize: 25.0,
+                              maxFontSize: 30.0,
+                              stepGranularity: 5.0,
+                              style: TextStyle(
+                                  color: Colors.white
+                              ),)
+                        )),
+                      Container(
+                          margin: EdgeInsets.only(top: 20.0),
+                          child:FittedBox(
+                              child:
+                              AutoSizeText("Participant2",
+                                maxLines: 1,
+                                minFontSize: 30.0,
+                                maxFontSize: 50.0,
+                                stepGranularity: 5.0,
+                                style: TextStyle(
+                                    color: Colors.white
+                                ),)
+                          ))]
                 ),
               )
           ),]
