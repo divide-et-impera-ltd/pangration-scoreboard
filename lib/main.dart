@@ -1,17 +1,11 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:pangration_score/app/models/match.dart';
 
 import 'ui/custom_widgets/grid_cell.dart';
+import 'package:provider/provider.dart';
 
-
-// <!-- The core Firebase JS SDK is always required and must be listed first -->
-// <script src="/__/firebase/8.2.4/firebase-app.js"></script>
-//
-// <!-- TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries -->
-// <script src="/__/firebase/8.2.4/firebase-analytics.js"></script>
-//
-// <!-- Initialize Firebase -->
-// <script src="/__/firebase/init.js"></script>
 
 void main() {
   runApp(MyApp());
@@ -41,6 +35,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
 
   @override
   Widget build(BuildContext context) {

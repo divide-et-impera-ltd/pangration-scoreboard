@@ -34,15 +34,37 @@
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
   <!-- The core Firebase JS SDK is always required and must be listed first -->
-  <script src="/__/firebase/8.2.4/firebase-app.js"></script>
+<!--  <script src="/__/firebase/8.2.4/firebase-app.js"></script>-->
+  <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+
+
+  <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-analytics.js"></script>
+
+  <script>
+
+  var firebaseConfig = {
+    apiKey: "AIzaSyC7LceB6t0lFOsKDd-AMzqMgGy6WRFE1wo",
+    authDomain: "pangration-scoreboard.firebaseapp.com",
+    projectId: "pangration-scoreboard",
+    storageBucket: "pangration-scoreboard.appspot.com",
+    messagingSenderId: "1009654154888",
+    appId: "1:1009654154888:web:6062b333b5d3769f1c013d",
+    measurementId: "G-FWB3GGGETL"
+  };
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  </script>
+
+  <script src="main.dart.js" type="application/javascript"></script>
+
 
   <!-- TODO: Add SDKs for Firebase products that you want to use
        https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-auth.js"></script>
-  <script src="/__/firebase/8.2.4/firebase-analytics.js"></script>
+<!--  <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-auth.js"></script>-->
+<!--  <script src="/__/firebase/8.2.4/firebase-analytics.js"></script>-->
 
-  <!-- Initialize Firebase -->
-  <script src="/__/firebase/init.js"></script>
+<!--  &lt;!&ndash; Initialize Firebase &ndash;&gt;-->
+<!--  <script src="/__/firebase/init.js"></script>-->
 
   <script>
     if ('serviceWorker' in navigator) {
