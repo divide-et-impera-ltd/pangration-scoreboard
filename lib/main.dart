@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'ui/custom_widgets/grid_cell.dart';
-
+import 'package:sizer/sizer.dart';
 
 // <!-- The core Firebase JS SDK is always required and must be listed first -->
 // <script src="/__/firebase/8.2.4/firebase-app.js"></script>
@@ -47,9 +47,9 @@ class _MyHomePageState extends State<MyHomePage> {
     final Orientation orientation = MediaQuery.of(context).orientation;
     var screenSize = MediaQuery.of(context).size.width;
     int count = 0;
-    if(screenSize < 450) {
+    if(screenSize < 760) {
       count = 1;
-    } else if (orientation == Orientation.portrait) {
+    } else if (screenSize < 1800) {
       count = 2;
     } else {
       count = 3;

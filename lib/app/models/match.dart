@@ -13,5 +13,4 @@ class Match {
   List<Participant> participants;
   String date;
   String result;
-
 }

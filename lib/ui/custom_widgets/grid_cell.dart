@@ -14,8 +14,21 @@ class GridCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // double fs = 30.0 * MediaQuery.of(context).size.width / 414.0;
-    // double resultFontSize = 10.0 * MediaQuery.of(context).size.width / 414.0;
+    double width = MediaQuery.of(context).size.width;
+    double dateScale = 0.015, nameScale = 0.025, scoreScale = 0.02;
+    if(width < 760) {
+      dateScale = 0.04;
+      nameScale = 0.065;
+      scoreScale = 0.05;
+    } else if (width >= 760 && width <1800) {
+      dateScale = 0.025;
+      nameScale = 0.035;
+      scoreScale = 0.03;
+    } if (width < 200) {
+      dateScale = 0.00025;
+      nameScale = 0.00035;
+      scoreScale = 0.0003;
+    }
     return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -42,30 +55,39 @@ class GridCell extends StatelessWidget {
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
+                Container(
+                    alignment: Alignment.topLeft,
+                    margin: EdgeInsets.only(left: 10.0,right: 30.0,top: 5.0),
+                    child:FittedBox(
+                        fit: BoxFit.fill,
+                        child:
+                        AutoSizeText("20 ianuarie 2021",
+                          style: TextStyle(
+                              fontSize: width  * dateScale,
+                              color: Colors.white
+                          ),)
+                    )),
                   Container(
+                    margin:EdgeInsets.only(top:10.0),
                       child:FittedBox(
-                       child:
-                       AutoSizeText("Participant1",
-                         maxLines: 1,
-                         minFontSize: 30.0,
-                         maxFontSize: 50.0,
-                         stepGranularity: 5.0,
-                         style: TextStyle(
-                             color: Colors.white
-                         ),)
+                          fit: BoxFit.fitHeight,
+                          child:
+                          AutoSizeText("Participant1",
+                            style: TextStyle(
+                                fontSize: width  * nameScale,
+                                color: Colors.white
+                            ),)
                       )),
                   Container(
-                    margin: EdgeInsets.only(top: 20.0),
+                    margin: EdgeInsets.only(top: width*0.02,bottom: width*0.005),
                       child:FittedBox(
+                          fit: BoxFit.fitHeight,
                           child:
                           AutoSizeText(count.toString(),
-                            maxLines: 1,
-                            minFontSize: 25.0,
-                            maxFontSize: 30.0,
-                            stepGranularity: 5.0,
                             style: TextStyle(
+                                fontSize: width  * scoreScale,
                                 color: Colors.white
                             ),)
                       ))]
@@ -82,27 +104,24 @@ class GridCell extends StatelessWidget {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[Container(
+                        margin: EdgeInsets.only(top: width*0.005,bottom: width*0.02),
                         child:FittedBox(
+                            fit: BoxFit.fitHeight,
                             child:
                             AutoSizeText(count.toString(),
-                              maxLines: 1,
-                              minFontSize: 25.0,
-                              maxFontSize: 30.0,
-                              stepGranularity: 5.0,
                               style: TextStyle(
+                                  fontSize: width  * scoreScale,
                                   color: Colors.white
                               ),)
                         )),
                       Container(
-                          margin: EdgeInsets.only(top: 20.0),
+                          margin: EdgeInsets.only(bottom:width*0.03),
                           child:FittedBox(
+                              fit: BoxFit.fitHeight,
                               child:
                               AutoSizeText("Participant2",
-                                maxLines: 1,
-                                minFontSize: 30.0,
-                                maxFontSize: 50.0,
-                                stepGranularity: 5.0,
                                 style: TextStyle(
+                                    fontSize: width  * nameScale,
                                     color: Colors.white
                                 ),)
                           ))]
