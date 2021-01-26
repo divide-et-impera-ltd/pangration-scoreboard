@@ -1,10 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pangration_score/app/models/match.dart';
+import 'package:pangration_score/app/models/participant.dart';
 import 'package:pangration_score/ui/AddParticipant.dart';
+import 'package:pangration_score/ui/ParticipantsList.dart';
 
 import 'ui/custom_widgets/grid_cell.dart';
-
+import 'package:sizer/sizer.dart';
 
 // <!-- The core Firebase JS SDK is always required and must be listed first -->
 // <script src="/__/firebase/8.2.4/firebase-app.js"></script>
@@ -25,6 +29,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
 
   final Future<FirebaseApp> firebaseInitialization = Firebase.initializeApp();
+  
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,18 +68,25 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  CollectionReference matches = FirebaseFirestore.instance.collection('matches');
+
+
+
   @override
   Widget build(BuildContext context) {
+    // fetchMatches();
     final Orientation orientation = MediaQuery.of(context).orientation;
     var screenSize = MediaQuery.of(context).size.width;
     int count = 0;
-    if(screenSize < 450) {
+    if(screenSize < 760) {
       count = 1;
-    } else if (orientation == Orientation.portrait) {
+    } else if (screenSize < 1800) {
       count = 2;
     } else {
       count = 3;
     }
+
+
     return Scaffold(
         appBar: AppBar(
           title: Text("Pangration Scoreboard"),
@@ -84,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => AddParticipant())
+                      MaterialPageRoute(builder: (context) => ParticipantsList())
                   );
                 },
               child: Text("Add participant"),
