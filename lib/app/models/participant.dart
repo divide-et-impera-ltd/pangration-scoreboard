@@ -13,7 +13,7 @@ class Participant {
   String uid;
   String firstName;
   String lastName;
-  String age;
-  String weight;
-  String height;
+  int age;
+  double weight;
+  double height;
 }

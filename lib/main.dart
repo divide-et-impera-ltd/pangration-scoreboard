@@ -1,4 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pangration_score/ui/AddParticipant.dart';
 
 import 'ui/custom_widgets/grid_cell.dart';
 import 'package:sizer/sizer.dart';
@@ -14,21 +17,38 @@ import 'package:sizer/sizer.dart';
 // <script src="/__/firebase/init.js"></script>
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
+  final Future<FirebaseApp> firebaseInitialization = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(title: 'Pangration Scoreboard'),
-    );
+    return FutureBuilder(
+        future: firebaseInitialization,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Container(
+              child: Text("Firebase initialization has error"),
+            );
+          }
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            return MaterialApp(
+              title: 'Pangration Scoreboard',
+              theme: ThemeData(
+                primarySwatch: Colors.blue,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+              ),
+              home: MyHomePage(title: 'Pangration Scoreboard'),
+            );
+          }
+          return CupertinoActivityIndicator();
+    });
   }
 }
 
@@ -55,10 +75,23 @@ class _MyHomePageState extends State<MyHomePage> {
       count = 3;
     }
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Pangration Scoreboard"),
-        backgroundColor: Colors.blue,
-      ),
+        appBar: AppBar(
+          title: Text("Pangration Scoreboard"),
+          backgroundColor: Colors.blue,
+          actions: [
+            FlatButton(
+              textColor: Colors.white,
+              onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AddParticipant())
+                  );
+                },
+              child: Text("Add participant"),
+              shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+            )
+          ],
+        ),
       backgroundColor: Colors.white,
       body: Center(
         child: GridView.count(
