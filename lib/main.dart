@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pangration_score/ui/AddParticipant.dart';
 
 import 'ui/custom_widgets/grid_cell.dart';
 
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
 
           if (snapshot.connectionState == ConnectionState.done) {
             return MaterialApp(
-              title: 'Flutter Demo',
+              title: 'Pangration Scoreboard',
               theme: ThemeData(
                 primarySwatch: Colors.blue,
                 visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -74,10 +75,23 @@ class _MyHomePageState extends State<MyHomePage> {
       count = 3;
     }
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Pangration Scoreboard"),
-        backgroundColor: Colors.blue,
-      ),
+        appBar: AppBar(
+          title: Text("Pangration Scoreboard"),
+          backgroundColor: Colors.blue,
+          actions: [
+            FlatButton(
+              textColor: Colors.white,
+              onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AddParticipant())
+                  );
+                },
+              child: Text("Add participant"),
+              shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+            )
+          ],
+        ),
       backgroundColor: Colors.white,
       body: Center(
         child: GridView.count(
