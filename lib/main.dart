@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'ui/custom_widgets/grid_cell.dart';
@@ -14,21 +16,38 @@ import 'ui/custom_widgets/grid_cell.dart';
 // <script src="/__/firebase/init.js"></script>
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
+  final Future<FirebaseApp> firebaseInitialization = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: MyHomePage(title: 'Pangration Scoreboard'),
-    );
+    return FutureBuilder(
+        future: firebaseInitialization,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Container(
+              child: Text("Firebase initialization has error"),
+            );
+          }
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            return MaterialApp(
+              title: 'Flutter Demo',
+              theme: ThemeData(
+                primarySwatch: Colors.blue,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+              ),
+              home: MyHomePage(title: 'Pangration Scoreboard'),
+            );
+          }
+          return CupertinoActivityIndicator();
+    });
   }
 }
 
