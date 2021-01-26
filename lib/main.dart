@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,8 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
 
   final Future<FirebaseApp> firebaseInitialization = Firebase.initializeApp();
+  
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +64,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+  var matches = FirebaseFirestore.instance
+      .collection('matches')
+      .get()
+      .then((QuerySnapshot querySnapshot) => {
+    querySnapshot.docs.forEach((doc) {
+      print(doc["result"]);
+    })
+  });
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
           childAspectRatio: (orientation == Orientation.portrait) ? 1.0 : 1.3,
           children: <Widget>[
             for(var count = 0; count < 10; count++)
-              GridCell(count: count)
+              GridCell(count: count);
           ],
         )
       )

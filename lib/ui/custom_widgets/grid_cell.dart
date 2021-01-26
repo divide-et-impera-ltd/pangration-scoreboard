@@ -1,15 +1,17 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pangration_score/app/models/match.dart';
 import 'package:sizer/sizer.dart';
 
 class GridCell extends StatelessWidget {
   const GridCell({
     Key key,
-    @required this.count,
+    @required this.count, this.match,
   }) : super(key: key);
 
   final int count;
+  final Match match;
 
 
   @override
