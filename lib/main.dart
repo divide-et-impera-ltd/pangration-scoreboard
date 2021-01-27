@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pangration_score/app/models/match.dart';
+import 'package:pangration_score/app/models/participant.dart';
 import 'package:pangration_score/ui/AddParticipant.dart';
 
 import 'ui/custom_widgets/grid_cell.dart';
@@ -65,23 +67,59 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  var matches = FirebaseFirestore.instance
-      .collection('matches')
-      .get()
-      .then((QuerySnapshot querySnapshot) => {
-    querySnapshot.docs.forEach((doc) {
-      print(doc["result"]);
-    })
-  });
+  CollectionReference matches = FirebaseFirestore.instance.collection(
+      'matches');
+  CollectionReference participants = FirebaseFirestore.instance.collection(
+      'participants');
 
 
+  Future<List<Match>> getFirebaseMatches() async {
+    List<Match> pangrationMatches = [];
+    QuerySnapshot matchSnapshot = await matches.get();
+     matchSnapshot.docs.forEach((matchRecord) async {
+      Map<String, dynamic> matchData = matchRecord.data();
+      var participantPaths = matchData['participants'];
+      List<Participant> participantList = [];
+      for (DocumentReference docRef in participantPaths) {
+        await participants.doc(docRef.id).get()
+            .then((snapshot) =>
+        {
+          participantList.add(Participant('123',
+              snapshot.data()['first_name'],
+              snapshot.data()['last_name'],
+              snapshot.data()['age'],
+              snapshot.data()['weight'],
+              snapshot.data()['height']
+          ))
+        });
+      }
+      pangrationMatches.add(Match("", participantList, matchData['date'], matchData['result']));
+      print(pangrationMatches.first.participants[1].age);
+      print(pangrationMatches.length);
+    });
+    return pangrationMatches;
+  }
+
+  Widget printFirebaseMatches() {
+    new FutureBuilder<List<Match>>(
+      future: getFirebaseMatches(), // a Future<String> or null
+      builder: (BuildContext context, AsyncSnapshot<List<Match>> snapshot) {
+        return new Text('Result: ${snapshot.data.length}');
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final Orientation orientation = MediaQuery.of(context).orientation;
-    var screenSize = MediaQuery.of(context).size.width;
+    final Orientation orientation = MediaQuery
+        .of(context)
+        .orientation;
+    var screenSize = MediaQuery
+        .of(context)
+        .size
+        .width;
     int count = 0;
-    if(screenSize < 760) {
+    if (screenSize < 760) {
       count = 1;
     } else if (screenSize < 1800) {
       count = 2;
@@ -96,29 +134,28 @@ class _MyHomePageState extends State<MyHomePage> {
             FlatButton(
               textColor: Colors.white,
               onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => AddParticipant())
-                  );
-                },
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddParticipant())
+                );
+              },
               child: Text("Add participant"),
               shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
             )
           ],
         ),
-      backgroundColor: Colors.white,
-      body: Center(
-        child: GridView.count(
-          primary: false,
-          padding: const EdgeInsets.all(10),
-          crossAxisCount: count,
-          childAspectRatio: (orientation == Orientation.portrait) ? 1.0 : 1.3,
-          children: <Widget>[
-            for(var count = 0; count < 10; count++)
-              GridCell(count: count);
-          ],
+        backgroundColor: Colors.white,
+        body: Center(
+            child: GridView.count(
+              primary: false,
+              padding: const EdgeInsets.all(10),
+              crossAxisCount: count,
+              childAspectRatio: (orientation == Orientation.portrait)
+                  ? 1.0
+                  : 1.3,
+              children: [printFirebaseMatches()],
+            )
         )
-      )
     );
   }
 }

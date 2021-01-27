@@ -2,12 +2,12 @@ import 'package:meta/meta.dart';
 import 'package:pangration_score/app/models/participant.dart';
 
 class Match {
-  Match({
-    @required this.uid,
+  Match(
+    this.uid,
     this.participants,
     this.date,
     this.result
-  });
+  );
 
   String uid;
   List<Participant> participants;
