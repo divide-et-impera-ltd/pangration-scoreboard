@@ -75,8 +75,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<List<Match>> getFirebaseMatches() async {
     List<Match> pangrationMatches = [];
+    pangrationMatches.add(Match("asdasd",[],"asdad","asdasd"));
     QuerySnapshot matchSnapshot = await matches.get();
-     matchSnapshot.docs.forEach((matchRecord) async {
+    for(DocumentSnapshot matchRecord in matchSnapshot.docs) {
       Map<String, dynamic> matchData = matchRecord.data();
       var participantPaths = matchData['participants'];
       List<Participant> participantList = [];
@@ -93,24 +94,31 @@ class _MyHomePageState extends State<MyHomePage> {
           ))
         });
       }
-      pangrationMatches.add(Match("", participantList, matchData['date'], matchData['result']));
-      print(pangrationMatches.first.participants[1].age);
+      pangrationMatches.add(
+          Match("", participantList, matchData['date'], matchData['result']));
+      print(pangrationMatches[1].participants[0].age);
       print(pangrationMatches.length);
-    });
+    }
+     print("intra pe aici");
     return pangrationMatches;
   }
 
   Widget printFirebaseMatches() {
-    new FutureBuilder<List<Match>>(
+    return FutureBuilder<List<Match>>(
       future: getFirebaseMatches(), // a Future<String> or null
       builder: (BuildContext context, AsyncSnapshot<List<Match>> snapshot) {
-        return new Text('Result: ${snapshot.data.length}');
+        print("intra aici");
+        if(snapshot.data == null) return Text("Loading...");
+        if(snapshot.hasError) return new Text("error");
+        if(snapshot.data.isEmpty) return new Text("empty");
+        return GridCell(match: snapshot.data[1]);
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    //Widget text = printFirebaseMatches();
     final Orientation orientation = MediaQuery
         .of(context)
         .orientation;

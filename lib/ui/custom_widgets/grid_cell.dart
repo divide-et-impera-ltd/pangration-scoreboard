@@ -7,10 +7,9 @@ import 'package:sizer/sizer.dart';
 class GridCell extends StatelessWidget {
   const GridCell({
     Key key,
-    @required this.count, this.match,
+    this.match,
   }) : super(key: key);
 
-  final int count;
   final Match match;
 
 
@@ -65,7 +64,7 @@ class GridCell extends StatelessWidget {
                     child:FittedBox(
                         fit: BoxFit.fill,
                         child:
-                        AutoSizeText("20 ianuarie 2021",
+                        AutoSizeText(match.date,
                           style: TextStyle(
                               fontSize: width  * dateScale,
                               color: Colors.white
@@ -76,7 +75,7 @@ class GridCell extends StatelessWidget {
                       child:FittedBox(
                           fit: BoxFit.fitHeight,
                           child:
-                          AutoSizeText("Participant1",
+                          AutoSizeText(match.participants[0].firstName + " "+ match.participants[0].lastName,
                             style: TextStyle(
                                 fontSize: width  * nameScale,
                                 color: Colors.white
@@ -87,7 +86,7 @@ class GridCell extends StatelessWidget {
                       child:FittedBox(
                           fit: BoxFit.fitHeight,
                           child:
-                          AutoSizeText(count.toString(),
+                          AutoSizeText(match.result.split(":").first,
                             style: TextStyle(
                                 fontSize: width  * scoreScale,
                                 color: Colors.white
@@ -110,7 +109,7 @@ class GridCell extends StatelessWidget {
                         child:FittedBox(
                             fit: BoxFit.fitHeight,
                             child:
-                            AutoSizeText(count.toString(),
+                            AutoSizeText(match.result.split(":")[1],
                               style: TextStyle(
                                   fontSize: width  * scoreScale,
                                   color: Colors.white
@@ -121,7 +120,7 @@ class GridCell extends StatelessWidget {
                           child:FittedBox(
                               fit: BoxFit.fitHeight,
                               child:
-                              AutoSizeText("Participant2",
+                              AutoSizeText(match.participants[1].firstName + " " + match.participants[1].lastName,
                                 style: TextStyle(
                                     fontSize: width  * nameScale,
                                     color: Colors.white
