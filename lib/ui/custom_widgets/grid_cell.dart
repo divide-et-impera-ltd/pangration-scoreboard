@@ -30,6 +30,20 @@ class GridCell extends StatelessWidget {
       nameScale = 0.00035;
       scoreScale = 0.0003;
     }
+    var scores = match.result.split(":");
+    int firstScore = int.parse(scores[0]);
+    int secondScore = int.parse(scores[1]);
+    Color firstColor,secondColor;
+    if(firstScore > secondScore) {
+      firstColor = Colors.green;
+      secondColor = Colors.redAccent;
+    } else if (firstScore < secondScore) {
+      firstColor = Colors.redAccent;
+      secondColor = Colors.green;
+    } else if (firstScore == secondScore) {
+      firstColor = Colors.blue;
+      secondColor = Colors.white12;
+    }
     return Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -52,7 +66,7 @@ class GridCell extends StatelessWidget {
             child:
             Container(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: firstColor,
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))
               ),
               child: Column(
@@ -86,7 +100,7 @@ class GridCell extends StatelessWidget {
                       child:FittedBox(
                           fit: BoxFit.fitHeight,
                           child:
-                          AutoSizeText(match.result.split(":").first,
+                          AutoSizeText(firstScore.toString(),
                             style: TextStyle(
                                 fontSize: width  * scoreScale,
                                 color: Colors.white
@@ -99,7 +113,7 @@ class GridCell extends StatelessWidget {
               child:
               Container(
                 decoration: BoxDecoration(
-                    color: Colors.white30,
+                    color: secondColor,
                     borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20))
                 ),
                 child: Column(
@@ -109,7 +123,7 @@ class GridCell extends StatelessWidget {
                         child:FittedBox(
                             fit: BoxFit.fitHeight,
                             child:
-                            AutoSizeText(match.result.split(":")[1],
+                            AutoSizeText(secondScore.toString(),
                               style: TextStyle(
                                   fontSize: width  * scoreScale,
                                   color: Colors.white

@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pangration_score/app/models/match.dart';
 import 'package:pangration_score/app/models/participant.dart';
+import 'package:pangration_score/ui/AddAMatch.dart';
 import 'package:pangration_score/ui/AddParticipant.dart';
+import 'package:pangration_score/ui/LoginScreen.dart';
 
 import 'ui/custom_widgets/grid_cell.dart';
 import 'package:sizer/sizer.dart';
@@ -96,10 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
       pangrationMatches.add(
           Match("", participantList, matchData['date'], matchData['result']));
-      print(pangrationMatches[1].participants[0].age);
-      print(pangrationMatches.length);
     }
-     print("intra pe aici");
     return pangrationMatches;
   }
 
@@ -107,13 +107,13 @@ class _MyHomePageState extends State<MyHomePage> {
     return FutureBuilder<List<Match>>(
       future: getFirebaseMatches(), // a Future<String> or null
       builder: (BuildContext context, AsyncSnapshot<List<Match>> snapshot) {
-        print("intra aici");
         if(snapshot.data == null) return Text("Hang on ... your data is loading ...");
         if(snapshot.hasError) return new Text("Oops! Something must have gone wrong :(");
         if(snapshot.data.isEmpty) return new Text("empty");
         List<Widget> gridCells = [];
         for(Match match in snapshot.data) {
           if(match.participants.isNotEmpty) {
+            print(match.result);
             gridCells.add(GridCell(match: match));
           }
         }
@@ -128,6 +128,65 @@ class _MyHomePageState extends State<MyHomePage> {
         );
       },
     );
+  }
+
+  List<Widget> showAdminButtons() {
+    List<Widget> buttonsList = [];
+    buttonsList.add(ListTile(
+      title: Text("Log in"),
+      trailing: Icon(Icons.arrow_forward),
+      onTap: () {
+        Navigator.of(context).pop();
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => LoginScreen())
+        );
+      }
+    ));
+    if(FirebaseAuth.instance.currentUser == null) {
+      buttonsList.removeAt(0);
+      buttonsList.add(ListTile(
+        title: Text("Log out"),
+        trailing: Icon(Icons.arrow_forward),
+        onTap: () {
+          _signOutUser();
+          Navigator.of(context).pop();
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen())
+          );
+        },
+      ));
+      buttonsList.add(ListTile(
+        title: Text("Add a participant"),
+        trailing: Icon(Icons.arrow_forward),
+        onTap: () {
+          Navigator.of(context).pop();
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddParticipant())
+          );
+        },
+      ));
+      buttonsList.add(ListTile(
+        title: Text("Add a match"),
+        trailing: Icon(Icons.arrow_forward),
+        onTap: () {
+            Navigator.of(context).pop();
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AddAMatch())
+            );
+          },
+      ));
+    }
+    return buttonsList;
+  }
+
+  void _signOutUser() async {
+    await FirebaseAuth.instance.signOut();
+    FirebaseAuth.instance.currentUser
+    setState(() {});
   }
 
   @override
@@ -152,19 +211,11 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: Text("Pangration Scoreboard"),
           backgroundColor: Colors.blue,
-          actions: [
-            FlatButton(
-              textColor: Colors.white,
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AddParticipant())
-                );
-              },
-              child: Text("Add participant"),
-              shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
-            )
-          ],
+        ),
+        drawer: Drawer(
+          child: ListView(
+            children: showAdminButtons(),
+          ),
         ),
         backgroundColor: Colors.white,
         body: Center(
