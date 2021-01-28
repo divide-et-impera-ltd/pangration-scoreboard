@@ -74,8 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   Future<List<Match>> getFirebaseMatches() async {
-    List<Match> pangrationMatches = [];
-    pangrationMatches.add(Match("asdasd",[],"asdad","asdasd"));
+    List<Match> pangrationMatches = new List();
+    pangrationMatches.add(Match("",[],"",""));
     QuerySnapshot matchSnapshot = await matches.get();
     for(DocumentSnapshot matchRecord in matchSnapshot.docs) {
       Map<String, dynamic> matchData = matchRecord.data();
@@ -103,15 +103,29 @@ class _MyHomePageState extends State<MyHomePage> {
     return pangrationMatches;
   }
 
-  Widget printFirebaseMatches() {
+  Widget printFirebaseMatchesInAGridView(int count, Orientation orientation) {
     return FutureBuilder<List<Match>>(
       future: getFirebaseMatches(), // a Future<String> or null
       builder: (BuildContext context, AsyncSnapshot<List<Match>> snapshot) {
         print("intra aici");
-        if(snapshot.data == null) return Text("Loading...");
-        if(snapshot.hasError) return new Text("error");
+        if(snapshot.data == null) return Text("Hang on ... your data is loading ...");
+        if(snapshot.hasError) return new Text("Oops! Something must have gone wrong :(");
         if(snapshot.data.isEmpty) return new Text("empty");
-        return GridCell(match: snapshot.data[1]);
+        List<Widget> gridCells = [];
+        for(Match match in snapshot.data) {
+          if(match.participants.isNotEmpty) {
+            gridCells.add(GridCell(match: match));
+          }
+        }
+        return GridView.count(
+          primary: false,
+          padding: const EdgeInsets.all(10),
+          crossAxisCount: count,
+          childAspectRatio: (orientation == Orientation.portrait)
+              ? 1.0
+              : 1.3,
+          children: gridCells
+        );
       },
     );
   }
@@ -154,15 +168,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         backgroundColor: Colors.white,
         body: Center(
-            child: GridView.count(
-              primary: false,
-              padding: const EdgeInsets.all(10),
-              crossAxisCount: count,
-              childAspectRatio: (orientation == Orientation.portrait)
-                  ? 1.0
-                  : 1.3,
-              children: [printFirebaseMatches()],
-            )
+            child: printFirebaseMatchesInAGridView(count,orientation)
         )
     );
   }
