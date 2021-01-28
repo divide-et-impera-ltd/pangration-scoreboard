@@ -132,62 +132,70 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<Widget> showAdminButtons() {
     List<Widget> buttonsList = [];
-    buttonsList.add(ListTile(
-      title: Text("Log in"),
-      trailing: Icon(Icons.arrow_forward),
-      onTap: () {
-        Navigator.of(context).pop();
-        Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LoginScreen())
-        );
-      }
-    ));
-    if(FirebaseAuth.instance.currentUser == null) {
-      buttonsList.removeAt(0);
-      buttonsList.add(ListTile(
-        title: Text("Log out"),
-        trailing: Icon(Icons.arrow_forward),
-        onTap: () {
-          _signOutUser();
-          Navigator.of(context).pop();
-          Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => LoginScreen())
-          );
-        },
-      ));
-      buttonsList.add(ListTile(
-        title: Text("Add a participant"),
-        trailing: Icon(Icons.arrow_forward),
-        onTap: () {
-          Navigator.of(context).pop();
-          Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => AddParticipant())
-          );
-        },
-      ));
-      buttonsList.add(ListTile(
-        title: Text("Add a match"),
-        trailing: Icon(Icons.arrow_forward),
-        onTap: () {
-            Navigator.of(context).pop();
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddAMatch())
-            );
-          },
-      ));
-    }
+
+    FirebaseAuth.instance
+      .authStateChanges()
+      .listen((User user) {
+        if(user == null) {
+          buttonsList.clear();
+          buttonsList.add(ListTile(
+              title: Text("Log in"),
+              trailing: Icon(Icons.arrow_forward),
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen())
+                );
+              }
+          ));
+        } else {
+          buttonsList.clear();
+          buttonsList.add(ListTile(
+            title: Text("Log out"),
+            trailing: Icon(Icons.arrow_forward),
+            onTap: () {
+              _signOutUser();
+              Navigator.of(context).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen())
+              );
+            },
+          ));
+          buttonsList.add(ListTile(
+            title: Text("Add a participant"),
+            trailing: Icon(Icons.arrow_forward),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddParticipant())
+              );
+            },
+          ));
+          buttonsList.add(ListTile(
+            title: Text("Add a match"),
+            trailing: Icon(Icons.arrow_forward),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddAMatch())
+              );
+            },
+          ));
+        }
+    });
     return buttonsList;
   }
 
+
   void _signOutUser() async {
     await FirebaseAuth.instance.signOut();
-    FirebaseAuth.instance.currentUser
     setState(() {});
   }
+
 
   @override
   Widget build(BuildContext context) {
