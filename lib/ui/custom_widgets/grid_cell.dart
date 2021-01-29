@@ -7,10 +7,9 @@ import 'package:sizer/sizer.dart';
 class GridCell extends StatelessWidget {
   const GridCell({
     Key key,
-    @required this.count, this.match,
+    this.match,
   }) : super(key: key);
 
-  final int count;
   final Match match;
 
 
@@ -30,6 +29,20 @@ class GridCell extends StatelessWidget {
       dateScale = 0.00025;
       nameScale = 0.00035;
       scoreScale = 0.0003;
+    }
+    var scores = match.result.split(":");
+    int firstScore = int.parse(scores[0]);
+    int secondScore = int.parse(scores[1]);
+    Color firstColor,secondColor;
+    if(firstScore > secondScore) {
+      firstColor = Colors.green;
+      secondColor = Colors.redAccent;
+    } else if (firstScore < secondScore) {
+      firstColor = Colors.redAccent;
+      secondColor = Colors.green;
+    } else if (firstScore == secondScore) {
+      firstColor = Colors.blue;
+      secondColor = Colors.white12;
     }
     return Container(
         decoration: BoxDecoration(
@@ -53,7 +66,7 @@ class GridCell extends StatelessWidget {
             child:
             Container(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: firstColor,
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20))
               ),
               child: Column(
@@ -65,7 +78,7 @@ class GridCell extends StatelessWidget {
                     child:FittedBox(
                         fit: BoxFit.fill,
                         child:
-                        AutoSizeText("20 ianuarie 2021",
+                        AutoSizeText(match.date,
                           style: TextStyle(
                               fontSize: width  * dateScale,
                               color: Colors.white
@@ -76,7 +89,7 @@ class GridCell extends StatelessWidget {
                       child:FittedBox(
                           fit: BoxFit.fitHeight,
                           child:
-                          AutoSizeText("Participant1",
+                          AutoSizeText(match.participants[0].firstName + " "+ match.participants[0].lastName,
                             style: TextStyle(
                                 fontSize: width  * nameScale,
                                 color: Colors.white
@@ -87,7 +100,7 @@ class GridCell extends StatelessWidget {
                       child:FittedBox(
                           fit: BoxFit.fitHeight,
                           child:
-                          AutoSizeText(count.toString(),
+                          AutoSizeText(firstScore.toString(),
                             style: TextStyle(
                                 fontSize: width  * scoreScale,
                                 color: Colors.white
@@ -100,7 +113,7 @@ class GridCell extends StatelessWidget {
               child:
               Container(
                 decoration: BoxDecoration(
-                    color: Colors.white30,
+                    color: secondColor,
                     borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight: Radius.circular(20))
                 ),
                 child: Column(
@@ -110,7 +123,7 @@ class GridCell extends StatelessWidget {
                         child:FittedBox(
                             fit: BoxFit.fitHeight,
                             child:
-                            AutoSizeText(count.toString(),
+                            AutoSizeText(secondScore.toString(),
                               style: TextStyle(
                                   fontSize: width  * scoreScale,
                                   color: Colors.white
@@ -121,7 +134,7 @@ class GridCell extends StatelessWidget {
                           child:FittedBox(
                               fit: BoxFit.fitHeight,
                               child:
-                              AutoSizeText("Participant2",
+                              AutoSizeText(match.participants[1].firstName + " " + match.participants[1].lastName,
                                 style: TextStyle(
                                     fontSize: width  * nameScale,
                                     color: Colors.white
