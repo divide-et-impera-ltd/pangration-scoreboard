@@ -2,33 +2,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pangration_score/app/Firebase/UserInstanceController.dart';
 
-import 'Background.dart';
-import 'RoundedButton.dart';
-import 'RoundedInputField.dart';
-import 'RoundedPasswordField.dart';
+import '../../main.dart';
+import '../custom_widgets/Background.dart';
+import '../custom_widgets/RoundedButton.dart';
+import '../custom_widgets/RoundedInputField.dart';
+import '../custom_widgets/RoundedPasswordField.dart';
 
 
 
 class LoginBody extends StatelessWidget {
 
-  const LoginBody({Key key}) : super(key: key);
-
-  Future<String> signInUser(String userName, String password) async {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: userName,
-          password: password
-      );
-      return "login-passed";
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        return e.code;
-      } else if (e.code == 'wrong-password') {
-        return e.code;
-      }
-    }
-  }
+  final UserInstanceController userInstanceController = UserInstanceController();
 
 
   @override
@@ -75,10 +61,14 @@ class LoginBody extends StatelessWidget {
                   ));
                   return;
                 }
-                String code = await signInUser(userName,password);
+                String code = await userInstanceController.signInUser(userName,password);
                 switch(code) {
                   case "login-passed":
                     Navigator.pop(context,true);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MyHomePage())
+                    );
                     break;
                   case "user-not-found":
                     Scaffold.of(context).showSnackBar(SnackBar(

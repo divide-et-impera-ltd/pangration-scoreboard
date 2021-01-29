@@ -36,6 +36,7 @@ dependencies:
   auto_size_text: ^2.1.0
   responsive_grid: ^1.2.1+1
   sizer: ^1.1.8
+  loading_animations: "^2.1.0"
 
 
 

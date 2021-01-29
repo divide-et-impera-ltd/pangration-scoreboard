@@ -2,7 +2,7 @@
 import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:pangration_score/ui/custom_widgets/LoginBody.dart';
+import 'package:pangration_score/ui/Login/LoginBody.dart';
 
 class LoginScreen extends StatelessWidget {
   @override

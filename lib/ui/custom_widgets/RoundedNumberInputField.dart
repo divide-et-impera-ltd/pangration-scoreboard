@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'TextFieldContainer.dart';
 
-class RoundedInputField extends StatelessWidget {
+class RoundedNumberInputField extends StatelessWidget {
   final String hintText;
   final IconData icon;
   final ValueChanged<String> onChanged;
-  const RoundedInputField({
+  const RoundedNumberInputField({
     Key key,
     this.hintText,
     this.icon = Icons.person,
@@ -18,8 +19,12 @@ class RoundedInputField extends StatelessWidget {
       child: TextField(
         onChanged: onChanged,
         cursorColor: Colors.white,
+        keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          WhitelistingTextInputFormatter.digitsOnly
+        ],
         style: (
-        TextStyle(color: Colors.white)
+            TextStyle(color: Colors.white)
         ),
         decoration: InputDecoration(
           icon: Icon(

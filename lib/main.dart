@@ -3,11 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animations/loading_animations.dart';
+import 'package:pangration_score/app/Firebase/DatabaseController.dart';
+import 'package:pangration_score/app/Firebase/UserInstanceController.dart';
 import 'package:pangration_score/app/models/match.dart';
 import 'package:pangration_score/app/models/participant.dart';
-import 'package:pangration_score/ui/AddAMatch.dart';
-import 'package:pangration_score/ui/AddParticipant.dart';
-import 'package:pangration_score/ui/LoginScreen.dart';
+import 'package:pangration_score/ui/AddMatch/AddMatchScreen.dart';
+import 'package:pangration_score/ui/Login/LoginScreen.dart';
 
 import 'ui/custom_widgets/grid_cell.dart';
 import 'package:sizer/sizer.dart';
@@ -70,44 +72,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  CollectionReference matches = FirebaseFirestore.instance.collection(
-      'matches');
-  CollectionReference participants = FirebaseFirestore.instance.collection(
-      'participants');
-
-
-  Future<List<Match>> getFirebaseMatches() async {
-    List<Match> pangrationMatches = new List();
-    pangrationMatches.add(Match("",[],"",""));
-    QuerySnapshot matchSnapshot = await matches.get();
-    for(DocumentSnapshot matchRecord in matchSnapshot.docs) {
-      Map<String, dynamic> matchData = matchRecord.data();
-      var participantPaths = matchData['participants'];
-      List<Participant> participantList = [];
-      for (DocumentReference docRef in participantPaths) {
-        await participants.doc(docRef.id).get()
-            .then((snapshot) =>
-        {
-          participantList.add(Participant('123',
-              snapshot.data()['first_name'],
-              snapshot.data()['last_name'],
-              snapshot.data()['age'],
-              snapshot.data()['weight'],
-              snapshot.data()['height']
-          ))
-        });
-      }
-      pangrationMatches.add(
-          Match("", participantList, matchData['date'], matchData['result']));
-    }
-    return pangrationMatches;
-  }
+  final DatabaseController databaseController = DatabaseController();
 
   Widget printFirebaseMatchesInAGridView(int count, Orientation orientation) {
     return FutureBuilder<List<Match>>(
-      future: getFirebaseMatches(), // a Future<String> or null
+      future: databaseController.getFirebaseMatches(), // a Future<String> or null
       builder: (BuildContext context, AsyncSnapshot<List<Match>> snapshot) {
-        if(snapshot.data == null) return Text("Hang on ... your data is loading ...");
+        if(snapshot.data == null) return LoadingBouncingGrid.square(size: 70.0, backgroundColor: Colors.blue);
         if(snapshot.hasError) return new Text("Oops! Something must have gone wrong :(");
         if(snapshot.data.isEmpty) return new Text("empty");
         List<Widget> gridCells = [];
@@ -130,71 +101,6 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  List<Widget> showAdminButtons() {
-    List<Widget> buttonsList = [];
-
-    FirebaseAuth.instance
-      .authStateChanges()
-      .listen((User user) {
-        if(user == null) {
-          buttonsList.clear();
-          buttonsList.add(ListTile(
-              title: Text("Log in"),
-              trailing: Icon(Icons.arrow_forward),
-              onTap: () {
-                Navigator.of(context).pop();
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen())
-                );
-              }
-          ));
-        } else {
-          buttonsList.clear();
-          buttonsList.add(ListTile(
-            title: Text("Log out"),
-            trailing: Icon(Icons.arrow_forward),
-            onTap: () {
-              _signOutUser();
-              Navigator.of(context).pop();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen())
-              );
-            },
-          ));
-          buttonsList.add(ListTile(
-            title: Text("Add a participant"),
-            trailing: Icon(Icons.arrow_forward),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddParticipant())
-              );
-            },
-          ));
-          buttonsList.add(ListTile(
-            title: Text("Add a match"),
-            trailing: Icon(Icons.arrow_forward),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddAMatch())
-              );
-            },
-          ));
-        }
-    });
-    return buttonsList;
-  }
-
-
-  void _signOutUser() async {
-    await FirebaseAuth.instance.signOut();
-    setState(() {});
-  }
 
 
   @override
@@ -215,6 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       count = 3;
     }
+    UserInstanceController userInstanceController = UserInstanceController();
     return Scaffold(
         appBar: AppBar(
           title: Text("Pangration Scoreboard"),
@@ -222,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         drawer: Drawer(
           child: ListView(
-            children: showAdminButtons(),
+            children: userInstanceController.showAdminButtons(context),
           ),
         ),
         backgroundColor: Colors.white,
