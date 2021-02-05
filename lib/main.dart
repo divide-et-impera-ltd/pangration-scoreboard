@@ -8,8 +8,11 @@ import 'package:pangration_score/app/Firebase/DatabaseController.dart';
 import 'package:pangration_score/app/Firebase/UserInstanceController.dart';
 import 'package:pangration_score/app/models/match.dart';
 import 'package:pangration_score/app/models/participant.dart';
-import 'package:pangration_score/ui/AddMatch/AddMatchScreen.dart';
+import 'package:pangration_score/ui/Events/EventsScreen.dart';
+import 'package:pangration_score/ui/Matches/AddMatch/AddMatchBody.dart';
 import 'package:pangration_score/ui/Login/LoginScreen.dart';
+import 'package:pangration_score/ui/Matches/AddMatch/AddMatchScreen.dart';
+import 'package:pangration_score/ui/Matches/MatchesResults/MatchesResultsBody.dart';
 
 import 'ui/custom_widgets/grid_cell.dart';
 import 'package:sizer/sizer.dart';
@@ -26,116 +29,57 @@ import 'package:sizer/sizer.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(App());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
 
-  final Future<FirebaseApp> firebaseInitialization = Firebase.initializeApp();
-  
+class AppRoutes {
+  static const String home = "home";
+}
 
+class _AppStateProvider extends InheritedWidget {
+  final AppState state;
+
+  _AppStateProvider({this.state, child}) : super(child: child);
+
+  @override
+  bool updateShouldNotify(_AppStateProvider old) => false;
+}
+
+class App extends StatefulWidget {
+  State<App> createState() => AppState();
+}
+
+class AppNavigator {
+  static NavigatorState of(BuildContext context) {
+    return AppState.of(context).navKey.currentState;
+  }
+}
+
+class AppState extends State<App> {
+  static AppState of(BuildContext context) {
+    return (context.inheritFromWidgetOfExactType(_AppStateProvider)
+    as _AppStateProvider)
+        .state;
+  }
+
+  final navKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: firebaseInitialization,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Container(
-              child: Text("Firebase initialization has error"),
-            );
-          }
-
-          if (snapshot.connectionState == ConnectionState.done) {
-            return MaterialApp(
-              title: 'Pangration Scoreboard',
-              theme: ThemeData(
-                primarySwatch: Colors.blue,
-                visualDensity: VisualDensity.adaptivePlatformDensity,
-              ),
-              home: MyHomePage(title: 'Pangration Scoreboard'),
-            );
-          }
-          return CupertinoActivityIndicator();
-    });
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-
-  final DatabaseController databaseController = DatabaseController();
-
-  Widget printFirebaseMatchesInAGridView(int count, Orientation orientation) {
-    return FutureBuilder<List<Match>>(
-      future: databaseController.getFirebaseMatches(), // a Future<String> or null
-      builder: (BuildContext context, AsyncSnapshot<List<Match>> snapshot) {
-        if(snapshot.data == null) return LoadingBouncingGrid.square(size: 70.0, backgroundColor: Colors.blue);
-        if(snapshot.hasError) return new Text("Oops! Something must have gone wrong :(");
-        if(snapshot.data.isEmpty) return new Text("empty");
-        List<Widget> gridCells = [];
-        for(Match match in snapshot.data) {
-          if(match.participants.isNotEmpty) {
-            print(match.result);
-            gridCells.add(GridCell(match: match));
-          }
-        }
-        return GridView.count(
-          primary: false,
-          padding: const EdgeInsets.all(10),
-          crossAxisCount: count,
-          childAspectRatio: (orientation == Orientation.portrait)
-              ? 1.0
-              : 1.3,
-          children: gridCells
-        );
-      },
+    return _AppStateProvider(
+      state: this,
+      child: MaterialApp(
+        navigatorKey: navKey,
+        initialRoute: AppRoutes.home,
+        routes: <String, WidgetBuilder>{
+          AppRoutes.home: (BuildContext context) => EventsScreen(),
+        },
+      ),
     );
   }
 
-
-
-  @override
-  Widget build(BuildContext context) {
-    //Widget text = printFirebaseMatches();
-    final Orientation orientation = MediaQuery
-        .of(context)
-        .orientation;
-    var screenSize = MediaQuery
-        .of(context)
-        .size
-        .width;
-    int count = 0;
-    if (screenSize < 760) {
-      count = 1;
-    } else if (screenSize < 1800) {
-      count = 2;
-    } else {
-      count = 3;
-    }
-    UserInstanceController userInstanceController = UserInstanceController();
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Pangration Scoreboard"),
-          backgroundColor: Colors.blue,
-        ),
-        drawer: Drawer(
-          child: ListView(
-            children: userInstanceController.showAdminButtons(context),
-          ),
-        ),
-        backgroundColor: Colors.white,
-        body: Center(
-            child: printFirebaseMatchesInAGridView(count,orientation)
-        )
-    );
-  }
 }
+
+
+

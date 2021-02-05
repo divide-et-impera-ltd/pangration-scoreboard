@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pangration_score/app/models/participant.dart';
-import 'package:pangration_score/ui/AddMatch/AddMatchBody.dart';
+import 'package:pangration_score/ui/Matches/AddMatch/AddMatchBody.dart';
 
 
 class RoundedDropDownButton extends StatelessWidget {

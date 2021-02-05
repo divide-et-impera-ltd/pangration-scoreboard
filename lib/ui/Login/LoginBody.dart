@@ -67,7 +67,7 @@ class LoginBody extends StatelessWidget {
                     Navigator.pop(context,true);
                     Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MyHomePage())
+                        MaterialPageRoute(builder: (context) => App())
                     );
                     break;
                   case "user-not-found":

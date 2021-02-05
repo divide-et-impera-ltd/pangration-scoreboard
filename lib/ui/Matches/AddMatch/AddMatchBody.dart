@@ -9,10 +9,10 @@ import 'package:pangration_score/ui/custom_widgets/RoundedDropDownButton.dart';
 import 'package:pangration_score/ui/custom_widgets/RoundedNumberInputField.dart';
 import 'package:provider/provider.dart';
 
-import '../custom_widgets/Background.dart';
-import '../custom_widgets/RoundedButton.dart';
-import '../custom_widgets/RoundedInputField.dart';
-import '../custom_widgets/RoundedPasswordField.dart';
+import '../../custom_widgets/Background.dart';
+import '../../custom_widgets/RoundedButton.dart';
+import '../../custom_widgets/RoundedInputField.dart';
+import '../../custom_widgets/RoundedPasswordField.dart';
 
 
 class MyAddMatchBody extends StatefulWidget {

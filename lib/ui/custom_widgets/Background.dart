@@ -26,7 +26,7 @@ class Background extends StatelessWidget {
                 Navigator.of(context).pop();
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MyHomePage())
+                    MaterialPageRoute(builder: (context) => App())
                 );
               }, // handle your image tap here
               child: Image.asset(
@@ -44,7 +44,7 @@ class Background extends StatelessWidget {
                 Navigator.of(context).pop();
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MyHomePage())
+                    MaterialPageRoute(builder: (context) => App())
                 );
               }, // handle your image tap here
               child: Image.asset(
