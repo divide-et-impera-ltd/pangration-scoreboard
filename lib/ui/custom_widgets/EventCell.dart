@@ -8,13 +8,8 @@ class EventCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double imageSize = 250;
-    double factor = 0.015;
-    if(width < 1900) {
-      factor = 1;
-    } else if (width < 1500) {
-      imageSize = 0;
-    }
+    double imageSize = width * 0.11;
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20.0)),
