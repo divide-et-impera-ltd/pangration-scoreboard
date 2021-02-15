@@ -10,5 +10,6 @@ class Event {
   final String eventDate;
   final String eventHour;
   final String eventLocation;
+  final String eventTimeEstimation;
   List<Match> eventMatches;
 }

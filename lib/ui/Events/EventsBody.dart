@@ -10,9 +10,10 @@ class EventsBody extends StatelessWidget {
         .size
         .width;
     int count = 2;
-    double ratio = 2.0;
-    if (screenSize < 1100) {
+    double ratio = 1.9;
+    if (screenSize < 930) {
       count = 1;
+      ratio = 2.5;
     }
 
     return Scaffold(
