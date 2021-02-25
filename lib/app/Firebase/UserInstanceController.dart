@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pangration_score/main.dart';
 import 'package:pangration_score/ui/Events/EventsScreen.dart';
+import 'package:pangration_score/ui/Events/LiveEvents/LiveEventsScreen.dart';
 import 'package:pangration_score/ui/Matches/AddMatch/AddMatchBody.dart';
 import 'package:pangration_score/ui/AddParticipant/AddAParticipantScreen.dart';
 import 'package:pangration_score/ui/Login/LoginScreen.dart';
@@ -24,7 +25,7 @@ class UserInstanceController {
         .listen((User user) {
       buttonsList.clear();
       buttonsList.add(SideMenuButton("Events", Icon(Icons.accessibility),EventsScreen()));
-      buttonsList.add(SideMenuButton("Live Events", Icon(Icons.live_tv),MatchesResultBody()));
+      buttonsList.add(SideMenuButton("Live Events", Icon(Icons.live_tv),LiveEventsScreen()));
       buttonsList.add(SideMenuButton("Participants Ranking", Icon(Icons.format_align_right_rounded),MatchesResultBody()));
       if(user == null) {
         buttonsList.add(SideMenuButton("Log in", Icon(Icons.arrow_forward),LoginScreen()));
